@@ -1,0 +1,44 @@
+syntax="proto3";
+ 
+package proto;
+ 
+option go_package = "pb/platform";
+ 
+message NewPlatform {
+    string unitName = 1;
+    string unitClass = 2;
+    string operation_field = 3;
+    string generalCategory = 4;
+    string generalType = 5;
+    string lethalityLevel = 6;
+    float cruisingSpeed = 7;
+    float maxSpeed = 8;
+    float combatRange = 9;
+    float fuelLoad = 10;
+    string countryOrigin = 11;
+}
+ 
+message Platform {
+    string unitName = 1;
+    string unitClass = 2;
+    string operation_field = 3;
+    string generalCategory = 4;
+    string generalType = 5;
+    string lethalityLevel = 6;
+    float cruisingSpeed = 7;
+    float maxSpeed = 8;
+    float combatRange = 9;
+    float fuelLoad = 10;
+    string countryOrigin = 11;
+    string id = 12;
+}
+
+message PlatformListRequest {}
+
+message PlatformListResponse {
+    repeated Platform platforms = 1;
+}
+ 
+service PlatformService {
+   rpc CreateNewPlatform(NewPlatform) returns (Platform) {}
+}
