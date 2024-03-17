@@ -1,4 +1,4 @@
- FROM golang:alpine AS builder
+FROM golang:alpine AS builder
 
 
 # Install git and ca-certificates (needed to be able to call HTTPS)
@@ -32,10 +32,8 @@ WORKDIR /app
 # Copy certificates
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-
 # Copy application's binary
 COPY --from=builder /app .
-
 
 # Command to run the application when starting the container
 CMD ["./main"] 
