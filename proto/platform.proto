@@ -2,7 +2,7 @@ syntax="proto3";
  
 package proto;
  
-option go_package = "pb/platform";
+option go_package = "github.com/uqyanzie/platform-library-grpc-api/pb";
  
 message NewPlatform {
     string unitName = 1;
@@ -41,4 +41,5 @@ message PlatformListResponse {
  
 service PlatformService {
    rpc CreateNewPlatform(NewPlatform) returns (Platform) {}
+   rpc GetPlatformList(PlatformListRequest) returns (PlatformListResponse) {}
 }

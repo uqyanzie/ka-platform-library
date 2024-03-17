@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: platform.proto
 
-package platform
+package pb
 
 import (
 	context "context"
@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	PlatformService_CreateNewPlatform_FullMethodName = "/proto.PlatformService/CreateNewPlatform"
+	PlatformService_GetPlatformList_FullMethodName   = "/proto.PlatformService/GetPlatformList"
 )
 
 // PlatformServiceClient is the client API for PlatformService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PlatformServiceClient interface {
 	CreateNewPlatform(ctx context.Context, in *NewPlatform, opts ...grpc.CallOption) (*Platform, error)
+	GetPlatformList(ctx context.Context, in *PlatformListRequest, opts ...grpc.CallOption) (*PlatformListResponse, error)
 }
 
 type platformServiceClient struct {
@@ -46,11 +48,21 @@ func (c *platformServiceClient) CreateNewPlatform(ctx context.Context, in *NewPl
 	return out, nil
 }
 
+func (c *platformServiceClient) GetPlatformList(ctx context.Context, in *PlatformListRequest, opts ...grpc.CallOption) (*PlatformListResponse, error) {
+	out := new(PlatformListResponse)
+	err := c.cc.Invoke(ctx, PlatformService_GetPlatformList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlatformServiceServer is the server API for PlatformService service.
 // All implementations must embed UnimplementedPlatformServiceServer
 // for forward compatibility
 type PlatformServiceServer interface {
 	CreateNewPlatform(context.Context, *NewPlatform) (*Platform, error)
+	GetPlatformList(context.Context, *PlatformListRequest) (*PlatformListResponse, error)
 	mustEmbedUnimplementedPlatformServiceServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedPlatformServiceServer struct {
 
 func (UnimplementedPlatformServiceServer) CreateNewPlatform(context.Context, *NewPlatform) (*Platform, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNewPlatform not implemented")
+}
+func (UnimplementedPlatformServiceServer) GetPlatformList(context.Context, *PlatformListRequest) (*PlatformListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPlatformList not implemented")
 }
 func (UnimplementedPlatformServiceServer) mustEmbedUnimplementedPlatformServiceServer() {}
 
@@ -92,6 +107,24 @@ func _PlatformService_CreateNewPlatform_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlatformService_GetPlatformList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PlatformListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlatformServiceServer).GetPlatformList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlatformService_GetPlatformList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlatformServiceServer).GetPlatformList(ctx, req.(*PlatformListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlatformService_ServiceDesc is the grpc.ServiceDesc for PlatformService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var PlatformService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateNewPlatform",
 			Handler:    _PlatformService_CreateNewPlatform_Handler,
+		},
+		{
+			MethodName: "GetPlatformList",
+			Handler:    _PlatformService_GetPlatformList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
