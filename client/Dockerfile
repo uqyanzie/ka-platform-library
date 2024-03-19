@@ -1,15 +1,29 @@
-FROM alpine:3.18
+FROM node:20.11.1-alpine
+WORKDIR /build
 
-ENV NODE_VERSION 20.11.1
 
-WORKDIR /app
+COPY package.json package.json
 
-COPY public/ /app/public
-COPY src/ /app/src
-COPY package.json /app/
 
-RUN apk add --no-cache nodejs npm && \
-    npm install
+COPY package-lock.json package-lock.json
 
-CMD ["npm", "start"]
 
+RUN npm ci
+
+
+COPY public/ public
+
+
+COPY src/ src
+
+
+RUN npm run build
+
+
+FROM httpd:alpine
+
+
+WORKDIR /var/www/html
+
+
+COPY --from=build /build/build/ .
