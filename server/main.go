@@ -99,7 +99,7 @@ func main() {
 func startGrpcServer(config config.Config) {
 
 	platformServer, err := gapi.NewGrpcPlatformServer(platformService, platformRepository)
-	
+
 	if err != nil {
 		log.Fatal("cannot create grpc platformServer: ", err)
 	}
