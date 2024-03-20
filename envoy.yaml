@@ -45,7 +45,7 @@ static_resources:
                   typed_config:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
   clusters:
-     - name: platform_service
+    - name: platform_service
       connect_timeout: 0.25s
       type: logical_dns
       # HTTP/2 support
